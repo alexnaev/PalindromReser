@@ -19,7 +19,7 @@ namespace PalindromReser.Controllers
             return View();
         }
 
-        public IActionResult Privacy()
+        public IActionResult Code()
         {
             return View();
         }
@@ -51,12 +51,14 @@ namespace PalindromReser.Controllers
             if(revWord == inputWord)
             {
                 palindrome.IsPalindrome = true;
-                palindrome.Message = $"Success! {palindrome.InputWord} is a Palindrome.";
+                palindrome.Message = $"{palindrome.InputWord} is a Palindrome.";
+                palindrome.MsgHeader = "Success!";
             }
             else
             {
                 palindrome.IsPalindrome = false;
-                palindrome.Message = $"Sorry! {palindrome.InputWord} is not a Palindrome.";
+                palindrome.Message = $"{palindrome.InputWord} is not a Palindrome.";
+                palindrome.MsgHeader = "Sorry!";
             }
 
             return View(palindrome);

@@ -73,3 +73,7 @@ main > .container {
     bottom: 0;
     width: 100%;
 }
+
+#alert {
+    margin-bottom: 100px;
+}

@@ -1,0 +1,86 @@
+﻿@{
+    ViewData["Title"] = "Code";
+}
+<div class="container py-5 px-5 mt-5">
+    <h2 class="border-1 border-bottom border-dark">The Code for PalindromReser.</h2>
+    <div class="row row-cols-1 row-cols-lg-2">
+        <div class="col-lg-8">
+            <pre class="line-numbers"><code class="language-javascript">
+                //The Palindrome object
+                public class Palindrome
+                {
+                    public string? InputWord { get; set; }
+                    public string? RevWord { get; set; }
+                    public bool IsPalindrome { get; set; }
+                    public string? Message { get; set; }
+                    public string? MsgHeader { get; set; }
+                }
+
+                //The action result methods in the controller used to run the palindrome or reverse page
+                [HttpGet]
+                public IActionResult Reverse()
+                {
+                    Palindrome model = new();
+                    return View(model);
+                }
+
+                //The palindrome check
+                [HttpPost]
+                [ValidateAntiForgeryToken]
+                public IActionResult Reverse(Palindrome palindrome)
+                {
+                    //local string variables
+                    string inputWord = palindrome.InputWord;
+                    string revWord = "";
+
+                    //Reverse the input
+                    for (int i = inputWord.Length - 1; i >= 0; i--)
+                    {
+                        revWord += inputWord[i];
+                    }
+
+                    //Set the reversed string in object property
+                    palindrome.RevWord = revWord;
+
+                    //Make both strings all lower case and remove unwanted characters
+                    revWord = Regex.Replace(revWord.ToLower(), "[^a-zæøåA-ZÆØÅ0-9]+", "");
+                    inputWord = Regex.Replace(inputWord.ToLower(), "[^a-zæøåA-ZÆØÅ0-9]+", "");
+
+                    //Check for palindrome
+                    if(revWord == inputWord)
+                    {
+                        palindrome.IsPalindrome = true;
+                        palindrome.Message = $"{palindrome.InputWord} is a Palindrome.";
+                        palindrome.MsgHeader = "Success!";
+                    }
+                    else
+                    {
+                        palindrome.IsPalindrome = false;
+                        palindrome.Message = $"{palindrome.InputWord} is not a Palindrome.";
+                        palindrome.MsgHeader = "Sorry!";
+                    }
+
+                    return View(palindrome);
+                }
+            </code>
+            </pre>
+        </div>
+        <div class="col-lg-4">
+            <p>PalindromReser is written in ASP.NET Core MVC using C# and .NET6. The C# code (specific to the pelindrome check) is structed in an object and two action result methods.</p>
+            <h5>Get Method</h5>
+            <p>The get method is an IActionResult method called Reverse, which simply combines the object and the view and returns the view to in response to an http get request.</p>
+            <h5>Post Method</h5>
+            <p>The post method is an IActionResult method also called Reverse. This method is run in response to an http post request, and takes in an object containing user input data. The input data stored in the object is then copied to a local string variable (inputWord) and run through a for loop reversing the input string and storing the reversed string in another local string variable (revWord). The revesed string is then copied to the object. After a regex run, the two local string variables are checked to see if they are identical, and a boolean and message (both properties of the object) are set to values depending on the outcome of this check (if revWord == inputWord). The object is then combined with the correct view which is returned in response to the post request.</p>
+            <h5>The Object</h5>
+            <p>The object (or model) is a class called Palindrome. This object has five properties: InputWord, RevWord, IsPalindrome, Message and MsgHeader (note the capital first letter as oppose to the camel case used in the local variables previously described). The Palindrome object is used to share data between the view and the controller, and its properties are accessed from the view using Razor synthax.</p>
+        </div>
+    </div>
+</div>
+<script>
+    Prism.plugins.NormalizeWhitespace.setDefaults({
+        'remove-trailing': true,
+        'remove-indent': true,
+        'left-trim': true,
+        'right-trim': true
+    })
+</script>
